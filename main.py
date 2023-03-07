@@ -17,9 +17,11 @@ class DrawApp:
         (192, 192, 192),
     ]
 
+    FONT = pygame.font.SysFont("Arial", 30)
+
     # Padding for the bars that are going to be sorted *(Placeholders currently)
     SIDE_PADDING = 100
-    TOP_PADDING = 150
+    TOP_PADDING = 275
 
     def __init__(self, height, width, lst) -> None:
 
@@ -49,9 +51,69 @@ class DrawApp:
         self.start_x = self.SIDE_PADDING // 2
 
 
-def draw(draw_app):
+class Button:
+    def __init__(
+        self, position_x, position_y, width, height, text, on_click_func, draw_app
+    ) -> None:
+        self.position_x = position_x
+        self.position_y = position_y
+        self.width = width
+        self.height = height
+        self.text = text
+        self.draw_app = draw_app
+        self.on_click_func = on_click_func
+        self.pressed = False
+
+        self.fillColors = {
+            "normal": "#23272a",
+            "hover": "#99aab5",
+            "pressed": "#2c2f33",
+        }
+
+    def draw(self):
+        self.button_surface = pygame.draw.rect(
+            self.draw_app.window,
+            self.fillColors["normal"],
+            (self.position_x, self.position_y, self.width, self.height),
+        )
+
+        self.button_text = self.draw_app.FONT.render(self.text, 1, self.draw_app.WHITE)
+
+    def process(self):
+        mouse_pos = pygame.mouse.get_pos()
+        if self.button_surface.collidepoint(mouse_pos):
+            self.button_surface = pygame.draw.rect(
+                self.draw_app.window,
+                self.fillColors["hover"],
+                (self.position_x, self.position_y, self.width, self.height),
+            )
+            if pygame.mouse.get_pressed(num_buttons=3)[0]:
+                self.button_surface = pygame.draw.rect(
+                    self.draw_app.window,
+                    self.fillColors["pressed"],
+                    (self.position_x, self.position_y, self.width, self.height),
+                )
+                if not self.pressed:
+                    self.on_click_func()
+                    self.pressed = True
+            else:
+                self.pressed = False
+
+        self.draw_app.window.blit(
+            self.button_text,
+            (
+                (self.width / 2 + self.position_x) - self.button_text.get_width() / 2,
+                (self.height / 2 + self.position_y) - self.button_text.get_height() / 2,
+            ),
+        )
+
+
+def draw(draw_app, buttons):
     draw_app.window.fill(draw_app.BACKGROUND_COLOR)
     draw_bars(draw_app)
+    for button in buttons:
+        button.draw()
+        button.process()
     pygame.display.update()
 
 
@@ -84,6 +146,10 @@ def draw_bars(draw_app):
         )
 
 
+def button_press():
+    print("Button Pressed")
+
+
 def create_list(n, min_val, max_val):
     # Create empty list
     lst = []
@@ -113,13 +179,20 @@ def main():
 
     # Create App object
     draw_app = DrawApp(600, 800, lst)
-    print(lst)
+
+    objects = []
+    bubble = Button(0, 0, 150, 75, "Bubble", button_press, draw_app)
+    insertion = Button(0, 75, 150, 75, "Insertion", button_press, draw_app)
+    merge = Button(0, 150, 150, 75, "Merge", button_press, draw_app)
+    objects.append(bubble)
+    objects.append(insertion)
+    objects.append(merge)
 
     while run:
         # refresh at 60ticks per second
         clock.tick(60)
         # Draw to window
-        draw(draw_app)
+        draw(draw_app, objects)
         # Update window
         pygame.display.update()
 
