@@ -7,18 +7,18 @@ Initial Screen with preshuffled list (Bubble Sort - Ascending by default)
 
 # Start
 By pressing the start button the app will display a step by step of how the sorting algorithm parses and sorts through the data
-<img width="640" alt="Screenshot 2023-03-08 at 5 14 12 AM" src="https://user-images.githubusercontent.com/26335818/223722459-a9c29dee-4584-460a-b94d-da503b73f1ea.png">
+<img width="640" alt="bubble-sort-ascending-start" src="https://user-images.githubusercontent.com/26335818/223722459-a9c29dee-4584-460a-b94d-da503b73f1ea.png">
 
 
 # Order 
 You can choose whether you would like to see the data be sort in ascending or descending order by clicking the buttons on the upper right.
-<img width="640" alt="Screenshot 2023-03-08 at 5 15 30 AM" src="https://user-images.githubusercontent.com/26335818/223722975-5ab1d127-aac6-45c8-a431-db6b0848fba4.png">
-<img width="640" alt="Screenshot 2023-03-08 at 5 16 59 AM" src="https://user-images.githubusercontent.com/26335818/223722984-099ee5b7-f33a-47c7-b819-bf2da5107983.png">
+<img width="640" alt="Insertion-sort-ascending" src="https://user-images.githubusercontent.com/26335818/223722975-5ab1d127-aac6-45c8-a431-db6b0848fba4.png">
+<img width="640" alt="Insertion sort descending" src="https://user-images.githubusercontent.com/26335818/223722984-099ee5b7-f33a-47c7-b819-bf2da5107983.png">
 
 # Repeatabilty 
 Allows for easy to use repeatabilty with the reset button allowing for quick and easy reuse.
 
-<img width="640" alt="Screenshot 2023-03-08 at 5 19 38 AM" src="https://user-images.githubusercontent.com/26335818/223723559-9673098f-a014-4b15-aedc-d3b70885c3e6.png">
+<img width="640" alt="Bubble-sort-visual-reset" src="https://user-images.githubusercontent.com/26335818/223723559-9673098f-a014-4b15-aedc-d3b70885c3e6.png">
 
 
 
