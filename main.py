@@ -219,8 +219,7 @@ def create_list(n, min_val, max_val):
 
 
 # Bubble Sort Algo
-def bubble_sort(draw_app, ascending):
-    lst = draw_app.lst
+def bubble_sort(draw_app, lst, ascending):
 
     for i in range(len(lst) - 1):
         for j in range(len(lst) - 1 - i):
@@ -235,8 +234,7 @@ def bubble_sort(draw_app, ascending):
 
 
 # Insertion Sort Algo
-def insertion_sort(draw_app, ascending):
-    lst = draw_app.lst
+def insertion_sort(draw_app, lst, ascending):
 
     for i in range(1, len(lst)):
         current = lst[i]
@@ -256,8 +254,63 @@ def insertion_sort(draw_app, ascending):
 
     return lst
 
+
 # Merge Sort Algorithm
-# def merge_sort(draw_app, ascendingg):
+def merge_sort(draw_app, lst, ascending):
+    if len(lst) <= 1:
+        return
+
+    mid = len(lst) // 2
+    left = lst[:mid]
+    right = lst[mid:]
+
+    merge_sort(draw_app, left, ascending)
+    merge_sort(draw_app, right, ascending)
+
+    pygame.time.wait(100)
+    merge(left, right, lst, ascending)
+
+
+def merge(left, right, lst, ascending):
+    len_left = len(left)
+    len_right = len(right)
+    i = j = k = 0
+    if ascending:
+        while i < len_left and j < len_right:
+            if left[i] <= right[j]:
+                lst[k] = left[i]
+                i += 1
+                k += 1
+            else:
+                lst[k] = right[j]
+                j += 1
+                k += 1
+        while i < len_left:
+            lst[k] = left[i]
+            i += 1
+            k += 1
+        while j < len_right:
+            lst[k] = right[j]
+            j += 1
+            k += 1
+    else:
+        while i < len_left and j < len_right:
+            if left[i] >= right[j]:
+                lst[k] = left[i]
+                i += 1
+                k += 1
+            else:
+                lst[k] = right[j]
+                j += 1
+                k += 1
+        while i < len_left:
+            lst[k] = left[i]
+            i += 1
+            k += 1
+        while j < len_right:
+            lst[k] = right[j]
+            j += 1
+            k += 1
 
 
 def main():
@@ -268,7 +321,7 @@ def main():
     clock = pygame.time.Clock()
 
     # Set list attributes
-    n = 50
+    n = 16
     min_val = 0
     max_val = 100
 
@@ -329,11 +382,13 @@ def main():
 
     while run:
         # refresh at 60ticks per second
-        clock.tick(40)
+        clock.tick(60)
         if sorting:
             try:
                 next(sorting_algorithm_generator)
             except StopIteration:
+                sorting = False
+            except TypeError:
                 sorting = False
         else:
             # Draw to window
@@ -349,7 +404,8 @@ def main():
             sorting_algorithm = bubble_sort
             sorting_algo_name = "Bubble Sort"
         if merge_button.process():
-            print("Merge")
+            sorting_algorithm = merge_sort
+            sorting_algo_name = "Merge Sort"
         if insertion_button.process():
             sorting_algorithm = insertion_sort
             sorting_algo_name = "Insertion Sort"
@@ -359,7 +415,9 @@ def main():
             sorting = False
         if start_button.process():
             sorting = True
-            sorting_algorithm_generator = sorting_algorithm(draw_app, ascending)
+            sorting_algorithm_generator = sorting_algorithm(
+                draw_app, draw_app.lst, ascending
+            )
         if ascending_button.process():
             ascending = True
             sorting = False
