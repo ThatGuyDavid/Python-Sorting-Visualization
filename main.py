@@ -321,7 +321,7 @@ def main():
     clock = pygame.time.Clock()
 
     # Set list attributes
-    n = 16
+    n = 50
     min_val = 0
     max_val = 100
 
