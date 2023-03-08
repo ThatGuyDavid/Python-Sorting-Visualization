@@ -12,10 +12,10 @@ class DrawApp:
     RED = 255, 0, 0
     GREEN = 0, 255, 0
     BACKGROUND_COLOR = WHITE
-    GREYS = [
-        (128, 128, 128),
-        (160, 160, 160),
-        (192, 192, 192),
+    BAR_COLORS = [
+        "#2e5090",
+        "#5873a6",
+        "#8296bc",
     ]
 
     FONT = pygame.font.SysFont("Arial", 25)
@@ -75,9 +75,9 @@ class Button:
         self.pressed = False
         # Color pallete for buttons (normal, hover, pressing)
         self.fillColors = {
-            "normal": "#23272a",
-            "hover": "#99aab5",
-            "pressed": "#2c2f33",
+            "normal": "#2e5090",
+            "hover": "#abb9d3",
+            "pressed": "#5873a6",
         }
 
     def draw(self):
@@ -134,10 +134,13 @@ class Button:
 
 def draw(draw_app, buttons, algo_name, ascending):
     draw_app.window.fill(draw_app.BACKGROUND_COLOR)
+    # Draw Display of Sort - Direction
     drawing_display(draw_app, algo_name, ascending)
+    # Draw buttons onto screen and track for hovering and press
     for button in buttons:
         button.draw()
         button.process()
+    # Draw bars to window
     draw_bars(draw_app)
     pygame.display.update()
 
@@ -163,6 +166,7 @@ def draw_bars(draw_app, color_positions={}, clear_bg=False):
     # Use list created
     lst = draw_app.lst
 
+    # Clear the window space for redrawing of visual sort
     if clear_bg:
         clear_rect = (
             draw_app.SIDE_PADDING // 2,
@@ -182,7 +186,7 @@ def draw_bars(draw_app, color_positions={}, clear_bg=False):
         y = draw_app.height - bar_val * draw_app.bar_height
 
         # Alternate color gradient to make more visible
-        color = draw_app.GREYS[i % 3]
+        color = draw_app.BAR_COLORS[i % 3]
 
         if i in color_positions:
             color = color_positions[i]
@@ -214,6 +218,7 @@ def create_list(n, min_val, max_val):
     return lst
 
 
+# Bubble Sort Algo
 def bubble_sort(draw_app, ascending):
     lst = draw_app.lst
 
@@ -227,6 +232,32 @@ def bubble_sort(draw_app, ascending):
                 draw_bars(draw_app, {j: draw_app.GREEN, j + 1: draw_app.RED}, True)
                 yield True
     return lst
+
+
+# Insertion Sort Algo
+def insertion_sort(draw_app, ascending):
+    lst = draw_app.lst
+
+    for i in range(1, len(lst)):
+        current = lst[i]
+
+        while True:
+            ascending_sort = i > 0 and lst[i - 1] > current and ascending
+            descending_sort = i > 0 and lst[i - 1] < current and not ascending
+
+            if not ascending_sort and not descending_sort:
+                break
+
+            lst[i] = lst[i - 1]
+            i = i - 1
+            lst[i] = current
+            draw_bars(draw_app, {i - 1: draw_app.GREEN, i: draw_app.RED}, True)
+            yield True
+
+    return lst
+
+# Merge Sort Algorithm
+# def merge_sort(draw_app, ascendingg):
 
 
 def main():
@@ -252,6 +283,7 @@ def main():
     # Create App object (Standard: ascending = True at initialization)
     draw_app = DrawApp(600, 800, lst)
 
+    #### Buttons ####
     objects = []
     bubble_button = Button(
         0,
@@ -263,7 +295,6 @@ def main():
     )
     insertion_button = Button(0, 71, 150, 70, "Insertion", draw_app)
     merge_button = Button(0, 142, 150, 70, "Merge", draw_app)
-
     ascending_button = Button(650, 0, 150, 105, "Ascending", draw_app)
     descending_button = Button(
         650,
@@ -273,7 +304,6 @@ def main():
         "Descending",
         draw_app,
     )
-
     start_button = Button(151, 142, 248, 70, "Start", draw_app)
     reset_button = Button(
         401,
@@ -286,20 +316,20 @@ def main():
     objects.append(bubble_button)
     objects.append(insertion_button)
     objects.append(merge_button)
-
     objects.append(ascending_button)
     objects.append(descending_button)
-
     objects.append(start_button)
     objects.append(reset_button)
+    #### Buttons ####
 
+    # Sorting Algorithm / Name / Generator
     sorting_algorithm = bubble_sort
     sorting_algo_name = "Bubble Sort"
     sorting_algorithm_generator = None
 
     while run:
         # refresh at 60ticks per second
-        clock.tick(120)
+        clock.tick(40)
         if sorting:
             try:
                 next(sorting_algorithm_generator)
@@ -321,7 +351,8 @@ def main():
         if merge_button.process():
             print("Merge")
         if insertion_button.process():
-            print("Insertion")
+            sorting_algorithm = insertion_sort
+            sorting_algo_name = "Insertion Sort"
         if reset_button.process():
             lst = create_list(n, min_val, max_val)
             draw_app.lst = lst
