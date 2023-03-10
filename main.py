@@ -180,7 +180,7 @@ def draw_bars(draw_app, color_positions={}, clear_bg=False):
     # Draw each bar based on the value in proportion to min and max within its boundaries
     for i, val in enumerate(lst):
         # amount of bars_height needed with min being 1 and max being difference + 1
-        bar_val = val - draw_app.min_val + 1
+        bar_val = val - draw_app.min_val + 8
 
         # Calculate the objects starting upper left position to each bar to draw out
         x = draw_app.start_x + i * draw_app.bar_width
