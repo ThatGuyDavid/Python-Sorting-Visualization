@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+import time
 
 pygame.init()
 
@@ -256,59 +257,119 @@ def insertion_sort(draw_app, lst, ascending):
 
 
 # Merge Sort Algorithm
-def merge_sort(draw_app, lst, ascending):
+def merge_sort(draw_app, lst, ascending, sort_list=[]):
+    # Keep track of original indexes to allow for swap visualization in merge function
+    # Initialize sort list at initial call of iteration
+    if len(sort_list) == 0:
+        # Create a list of pairs [value, index]
+        for idx in range(len(lst)):
+            sort_list.append([lst[idx], idx])
     if len(lst) <= 1:
         return
 
     mid = len(lst) // 2
     left = lst[:mid]
     right = lst[mid:]
+    # Create sorted list with index and values shared by left list and right list
+    l_srt = sort_list[:mid]
+    r_srt = sort_list[mid:]
+    merge_sort(draw_app, left, ascending, l_srt)
+    merge_sort(draw_app, right, ascending, r_srt)
+    # Create a combined list of left and right listed pairs to manage index for swaps
+    srt = l_srt + r_srt
 
-    merge_sort(draw_app, left, ascending)
-    merge_sort(draw_app, right, ascending)
-
-    pygame.time.wait(100)
-    merge(left, right, lst, ascending)
+    merge(draw_app, left, right, lst, ascending, r_srt, srt)
 
 
-def merge(left, right, lst, ascending):
+# Merge Function
+def merge(draw_app, left, right, lst, ascending, r_srt, srt):
     len_left = len(left)
     len_right = len(right)
     i = j = k = 0
+    # Ascending Order
     if ascending:
         while i < len_left and j < len_right:
+            time.sleep(0.07)
             if left[i] <= right[j]:
+                draw_app.lst[srt[k][1]] = left[i]
                 lst[k] = left[i]
+                draw_bars(
+                    draw_app,
+                    {srt[k][1]: draw_app.GREEN},
+                    True,
+                )
                 i += 1
                 k += 1
             else:
+                draw_app.lst[r_srt[j][1]] = draw_app.lst[srt[k][1]]
+                draw_app.lst[srt[k][1]] = right[j]
                 lst[k] = right[j]
+                draw_bars(
+                    draw_app,
+                    {srt[k][1]: draw_app.GREEN, r_srt[j][1]: draw_app.RED},
+                    True,
+                )
                 j += 1
                 k += 1
         while i < len_left:
+            time.sleep(0.07)
+            draw_app.lst[srt[k][1]] = left[i]
             lst[k] = left[i]
+            draw_bars(draw_app, {srt[k][1]: draw_app.GREEN}, True)
             i += 1
             k += 1
         while j < len_right:
+            time.sleep(0.07)
+            draw_app.lst[srt[k][1]] = right[j]
             lst[k] = right[j]
+            draw_bars(draw_app, {srt[k][1]: draw_app.GREEN}, True)
             j += 1
             k += 1
+    # Descending Order
     else:
         while i < len_left and j < len_right:
+            time.sleep(0.07)
             if left[i] >= right[j]:
+                draw_app.lst[srt[k][1]] = left[i]
                 lst[k] = left[i]
+                draw_bars(
+                    draw_app,
+                    {srt[k][1]: draw_app.GREEN},
+                    True,
+                )
                 i += 1
                 k += 1
             else:
+                draw_app.lst[r_srt[j][1]] = draw_app.lst[srt[k][1]]
+                draw_app.lst[srt[k][1]] = right[j]
                 lst[k] = right[j]
+                draw_bars(
+                    draw_app,
+                    {srt[k][1]: draw_app.GREEN, r_srt[j][1]: draw_app.RED},
+                    True,
+                )
                 j += 1
                 k += 1
         while i < len_left:
+            time.sleep(0.07)
+            draw_app.lst[srt[k][1]] = left[i]
             lst[k] = left[i]
+            draw_bars(
+                draw_app,
+                {srt[k][1]: draw_app.GREEN},
+                True,
+            )
             i += 1
             k += 1
         while j < len_right:
+            time.sleep(0.07)
+            draw_app.lst[srt[k][1]] = right[j]
             lst[k] = right[j]
+            draw_bars(
+                draw_app,
+                {srt[k][1]: draw_app.GREEN},
+                True,
+            )
             j += 1
             k += 1
 

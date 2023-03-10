@@ -10,18 +10,12 @@ By pressing the start button the app will display a step by step of how the sort
 <img width="640" alt="bubble-sort-ascending-start" src="https://user-images.githubusercontent.com/26335818/223722459-a9c29dee-4584-460a-b94d-da503b73f1ea.png">
 
 
-# Order 
+# Order
 You can choose whether you would like to see the data be sort in ascending or descending order by clicking the buttons on the upper right.
 <img width="640" alt="Insertion-sort-ascending" src="https://user-images.githubusercontent.com/26335818/223722975-5ab1d127-aac6-45c8-a431-db6b0848fba4.png">
 <img width="640" alt="Insertion sort descending" src="https://user-images.githubusercontent.com/26335818/223722984-099ee5b7-f33a-47c7-b819-bf2da5107983.png">
 
-# Repeatabilty 
+# Repeatabilty
 Allows for easy to use repeatabilty with the reset button allowing for quick and easy reuse.
 
 <img width="640" alt="Bubble-sort-visual-reset" src="https://user-images.githubusercontent.com/26335818/223723559-9673098f-a014-4b15-aedc-d3b70885c3e6.png">
-
-
-
-# TO-DO
-- [X] Implement Merge Sort
-- [ ] Implement Merge Sort Vizualization
